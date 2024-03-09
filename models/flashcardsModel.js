@@ -10,6 +10,15 @@ exports.insertFlashcard = async (question, answer) => {
 
     return newFlashcard.rows[0];
   } catch (err) {
+    console.error(err.message);
+  }
+};
+
+exports.selectFlashcards = async () => {
+  try {
+    const allFlashcards = await db.query(`SELECT * FROM flashcards;`);
+    return allFlashcards.rows;
+  } catch (err) {
     console.error(err.message, "<-- in model");
   }
 };

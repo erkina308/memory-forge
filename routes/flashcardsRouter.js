@@ -1,21 +1,17 @@
 const express = require("express");
 const router = express.Router();
 const db = require("../connection");
-const { postFlashcard } = require("../controllers/flashcardsController");
+const {
+  postFlashcard,
+  getFlashcards,
+} = require("../controllers/flashcardsController");
 //create flashcard //'next' will be used when creating advanced error handling //user_id needs to change later on to be dynamic
 
 router.post("/", postFlashcard);
 
 //get all flashcards
 
-router.get("/", async (req, res, next) => {
-  try {
-    const allFlashcards = await db.query(`SELECT * FROM flashcards;`);
-    res.json(allFlashcards.rows);
-  } catch (err) {
-    console.error(err.message);
-  }
-});
+router.get("/", getFlashcards);
 
 //get flashcard by id
 
