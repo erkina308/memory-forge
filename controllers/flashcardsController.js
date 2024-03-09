@@ -3,6 +3,7 @@ const {
   selectFlashcards,
   selectFlashcardById,
   updateFlashcardById,
+  removeFlashcardById,
 } = require("../models/flashcardsModel");
 
 // post new flashcard
@@ -54,6 +55,18 @@ exports.patchFlashcardById = async (req, res, next) => {
     );
     res.status(200).json({ flashcard: updatedFlashcard });
   } catch (err) {
-    console.error(err.message, "<-- in controller");
+    console.error(err.message);
+  }
+};
+
+// delete flashcard by id // check again if this needs to return a body
+
+exports.deleteFlashcardById = async (req, res, next) => {
+  try {
+    const { flashcard_id } = req.params;
+    const flashcardToDelete = await removeFlashcardById(flashcard_id);
+    res.status(204).json(flashcardToDelete);
+  } catch (err) {
+    console.error(err.message);
   }
 };
