@@ -40,3 +40,17 @@ exports.selectFlashcardById = async (flashcard_id) => {
     console.error(err.message);
   }
 };
+
+//update flashcard by id in flashcards table
+
+exports.updateFlashcardById = async (question, answer, flashcard_id) => {
+  try {
+    const updatedFlashcard = await db.query(
+      `UPDATE flashcards SET question = $1, answer = $2 WHERE flashcard_id = $3 RETURNING *;`,
+      [question, answer, flashcard_id]
+    );
+    return updatedFlashcard.rows;
+  } catch (err) {
+    console.error(err.message, "<-- in model");
+  }
+};

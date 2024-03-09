@@ -2,6 +2,7 @@ const {
   insertFlashcard,
   selectFlashcards,
   selectFlashcardById,
+  updateFlashcardById,
 } = require("../models/flashcardsModel");
 
 // post new flashcard
@@ -28,7 +29,7 @@ exports.getFlashcards = async (req, res, next) => {
   }
 };
 
-//get flashcard by id
+// get flashcard by id
 
 exports.getFlashcardById = async (req, res, next) => {
   try {
@@ -37,5 +38,22 @@ exports.getFlashcardById = async (req, res, next) => {
     res.status(200).json({ flashcard: selectedFlashcard });
   } catch (err) {
     console.error(err.message);
+  }
+};
+
+// patch flashcard by id
+
+exports.patchFlashcardById = async (req, res, next) => {
+  try {
+    const { flashcard_id } = req.params;
+    const { question, answer } = req.body;
+    const updatedFlashcard = await updateFlashcardById(
+      question,
+      answer,
+      flashcard_id
+    );
+    res.status(200).json({ flashcard: updatedFlashcard });
+  } catch (err) {
+    console.error(err.message, "<-- in controller");
   }
 };
