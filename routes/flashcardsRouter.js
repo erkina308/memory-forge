@@ -1,6 +1,5 @@
 const express = require("express");
 const router = express.Router();
-const db = require("../connection");
 const {
   postFlashcard,
   getFlashcards,
@@ -8,6 +7,7 @@ const {
   patchFlashcardById,
   deleteFlashcardById,
 } = require("../controllers/flashcardsController");
+
 //create flashcard //'next' will be used when creating advanced error handling //user_id needs to change later on to be dynamic
 
 router.post("/", postFlashcard);
