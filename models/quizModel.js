@@ -54,3 +54,17 @@ exports.updateQuizById = async (question, choices, correct_answer, quiz_id) => {
     console.error(err.message);
   }
 };
+
+//delete quiz by id from quizzes table
+
+exports.removeQuizById = async (quiz_id) => {
+  try {
+    const quizToDelete = await db.query(
+      `DELETE FROM quizzes WHERE quiz_id = $1 RETURNING *;`,
+      [quiz_id]
+    );
+    return quizToDelete.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};

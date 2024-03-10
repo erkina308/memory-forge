@@ -59,3 +59,15 @@ exports.patchQuizById = async (req, res, next) => {
     console.error(err.message);
   }
 };
+
+// delete quiz by id // check again if this needs to return a body
+
+exports.deleteQuizById = async (req, res, next) => {
+  try {
+    const { quiz_id } = req.params;
+    const quizToDelete = await removeQuizById(quiz_id);
+    res.status(204).json(quizToDelete);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
