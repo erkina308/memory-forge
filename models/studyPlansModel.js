@@ -59,3 +59,17 @@ exports.updateStudyPlanById = async (
     console.error(err.message);
   }
 };
+
+//delete study plan by id from study plans table
+
+exports.removeStudyPlanById = async (study_plan_id) => {
+  try {
+    const studyPlanToDelete = await db.query(
+      `DELETE FROM study_plans WHERE study_plan_id = $1 RETURNING *;`,
+      [study_plan_id]
+    );
+    return studyPlanToDelete.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};

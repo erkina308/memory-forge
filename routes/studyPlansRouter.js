@@ -24,8 +24,8 @@ router.get("/:study_plan_id", getStudyPlanById);
 
 router.patch("/:study_plan_id", patchStudyPlanById);
 
-// //delete a study plan
+//delete a study plan
 
-// router.delete("/:study_plan_id", deleteStudyPlanById);
+router.delete("/:study_plan_id", deleteStudyPlanById);
 
 module.exports = router;
