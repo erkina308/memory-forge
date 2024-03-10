@@ -45,3 +45,21 @@ exports.getStudyPlanById = async (req, res, next) => {
     console.error(err.message);
   }
 };
+
+// patch study plan by id
+
+exports.patchStudyPlanById = async (req, res, next) => {
+  try {
+    const { study_plan_id } = req.params;
+    const { task, start_datetime, end_datetime } = req.body;
+    const updatedStudyPlan = await updateStudyPlanById(
+      task,
+      start_datetime,
+      end_datetime,
+      study_plan_id
+    );
+    res.status(200).json({ study_plan: updatedStudyPlan });
+  } catch (err) {
+    console.error(err.message);
+  }
+};

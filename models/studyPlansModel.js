@@ -40,3 +40,22 @@ exports.selectStudyPlanById = async (study_plan_id) => {
     console.error(err.message);
   }
 };
+
+//update study plan by id in study plans table
+
+exports.updateStudyPlanById = async (
+  task,
+  start_datetime,
+  end_datetime,
+  study_plan_id
+) => {
+  try {
+    const updatedStudyPlan = await db.query(
+      `UPDATE study_plans SET task = $1, start_datetime = $2, end_datetime = $3 WHERE study_plan_id = $4 RETURNING *;`,
+      [task, start_datetime, end_datetime, study_plan_id]
+    );
+    return updatedStudyPlan.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};

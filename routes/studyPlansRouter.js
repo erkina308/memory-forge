@@ -20,9 +20,9 @@ router.get("/", getStudyPlans);
 
 router.get("/:study_plan_id", getStudyPlanById);
 
-// //update a study plan by id //user_id needs to change later on to be dynamic
+//update a study plan by id //user_id needs to change later on to be dynamic
 
-// router.patch("/:study_plan_id", patchStudyPlanById);
+router.patch("/:study_plan_id", patchStudyPlanById);
 
 // //delete a study plan
 
