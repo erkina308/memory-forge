@@ -20,12 +20,12 @@ router.get("/", getQuizzes);
 
 router.get("/:quiz_id", getQuizById);
 
-// //update a quiz by id //user_id needs to change later on to be dynamic
+//update a quiz by id //user_id needs to change later on to be dynamic
 
-// router.patch("/:quiz_id", patchQuizById);
+router.patch("/:quiz_id", patchQuizById);
 
-// //delete a quiz
+//delete a quiz
 
-// router.delete("/:quiz_id", deleteQuizById);
+router.delete("/:quiz_id", deleteQuizById);
 
 module.exports = router;

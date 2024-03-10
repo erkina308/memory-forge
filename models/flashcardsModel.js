@@ -51,7 +51,7 @@ exports.updateFlashcardById = async (question, answer, flashcard_id) => {
     );
     return updatedFlashcard.rows;
   } catch (err) {
-    console.error(err.message, "<-- in model");
+    console.error(err.message);
   }
 };
 

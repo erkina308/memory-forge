@@ -41,3 +41,21 @@ exports.getQuizById = async (req, res, next) => {
     console.error(err.message);
   }
 };
+
+// patch quiz by id
+
+exports.patchQuizById = async (req, res, next) => {
+  try {
+    const { quiz_id } = req.params;
+    const { question, choices, correct_answer } = req.body;
+    const updatedQuiz = await updateQuizById(
+      question,
+      choices,
+      correct_answer,
+      quiz_id
+    );
+    res.status(200).json({ quiz: updatedQuiz });
+  } catch (err) {
+    console.error(err.message);
+  }
+};

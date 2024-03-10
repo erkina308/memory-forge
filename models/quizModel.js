@@ -40,3 +40,17 @@ exports.selectQuizById = async (quiz_id) => {
     console.error(err.message);
   }
 };
+
+//update quiz by id in quizzes table
+
+exports.updateQuizById = async (question, choices, correct_answer, quiz_id) => {
+  try {
+    const updatedQuiz = await db.query(
+      `UPDATE quizzes SET question = $1, choices = $2, correct_answer = $3 WHERE quiz_id = $4 RETURNING *;`,
+      [question, choices, correct_answer, quiz_id]
+    );
+    return updatedQuiz.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
