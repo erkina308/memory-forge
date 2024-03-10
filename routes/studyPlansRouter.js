@@ -16,16 +16,16 @@ router.post("/", postStudyPlan);
 
 router.get("/", getStudyPlans);
 
-//get study plan by id
+// //get study plan by id
 
-router.get("/:study_plan_id", getStudyPlanById);
+// router.get("/:study_plan_id", getStudyPlanById);
 
-//update a study plan by id //user_id needs to change later on to be dynamic
+// //update a study plan by id //user_id needs to change later on to be dynamic
 
-router.patch("/:study_plan_id", patchStudyPlanById);
+// router.patch("/:study_plan_id", patchStudyPlanById);
 
-//delete a study plan
+// //delete a study plan
 
-router.delete("/:study_plan_id", deleteStudyPlanById);
+// router.delete("/:study_plan_id", deleteStudyPlanById);
 
 module.exports = router;
