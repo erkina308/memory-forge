@@ -16,9 +16,9 @@ router.post("/", postStudyPlan);
 
 router.get("/", getStudyPlans);
 
-// //get study plan by id
+//get study plan by id
 
-// router.get("/:study_plan_id", getStudyPlanById);
+router.get("/:study_plan_id", getStudyPlanById);
 
 // //update a study plan by id //user_id needs to change later on to be dynamic
 

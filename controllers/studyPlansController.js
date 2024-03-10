@@ -33,3 +33,15 @@ exports.getStudyPlans = async (req, res, next) => {
     console.error(err.message);
   }
 };
+
+// get study plan by id
+
+exports.getStudyPlanById = async (req, res, next) => {
+  try {
+    const { study_plan_id } = req.params;
+    const selectedStudyPlan = await selectStudyPlanById(study_plan_id);
+    res.status(200).json({ study_plan: selectedStudyPlan });
+  } catch (err) {
+    console.error(err.message);
+  }
+};

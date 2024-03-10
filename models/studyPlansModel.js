@@ -26,3 +26,17 @@ exports.selectStudyPlans = async () => {
     console.error(err.message);
   }
 };
+
+//select study plan by id from study plans table
+
+exports.selectStudyPlanById = async (study_plan_id) => {
+  try {
+    const studyPlanById = await db.query(
+      `SELECT * FROM study_plans WHERE study_plan_id = $1;`,
+      [study_plan_id]
+    );
+    return studyPlanById.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
