@@ -16,16 +16,16 @@ router.post("/", postQuiz);
 
 router.get("/", getQuizzes);
 
-// //get quiz by id
+//get quiz by id
 
-// router.get("/:flashcard_id", getQuizById);
+router.get("/:quiz_id", getQuizById);
 
 // //update a quiz by id //user_id needs to change later on to be dynamic
 
-// router.patch("/:flashcard_id", patchQuizById);
+// router.patch("/:quiz_id", patchQuizById);
 
 // //delete a quiz
 
-// router.delete("/:flashcard_id", deleteQuizById);
+// router.delete("/:quiz_id", deleteQuizById);
 
 module.exports = router;

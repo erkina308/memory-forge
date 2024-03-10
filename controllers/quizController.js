@@ -29,3 +29,15 @@ exports.getQuizzes = async (req, res, next) => {
     console.error(err.message);
   }
 };
+
+// get quiz by id
+
+exports.getQuizById = async (req, res, next) => {
+  try {
+    const { quiz_id } = req.params;
+    const selectedQuiz = await selectQuizById(quiz_id);
+    res.status(200).json({ quiz: selectedQuiz });
+  } catch (err) {
+    console.error(err.message);
+  }
+};

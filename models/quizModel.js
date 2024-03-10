@@ -26,3 +26,17 @@ exports.selectQuizzes = async () => {
     console.error(err.message);
   }
 };
+
+//select quiz by id from quiz table
+
+exports.selectQuizById = async (quiz_id) => {
+  try {
+    const quizById = await db.query(
+      `SELECT * FROM quizzes WHERE quiz_id = $1;`,
+      [quiz_id]
+    );
+    return quizById.rows;
+  } catch (err) {
+    console.error(err.message);
+  }
+};
