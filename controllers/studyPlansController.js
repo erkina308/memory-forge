@@ -65,7 +65,7 @@ exports.patchStudyPlanById = async (req, res, next) => {
     );
     res.status(200).json({ study_plan: updatedStudyPlan });
   } catch (err) {
-    console.error(err);
+    next(err);
   }
 };
 
