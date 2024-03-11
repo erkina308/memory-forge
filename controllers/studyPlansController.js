@@ -12,6 +12,9 @@ exports.postStudyPlan = async (req, res, next) => {
   //need to use next for the error at some point
   try {
     const { task, start_datetime, end_datetime } = req.body;
+    if (!task || !start_datetime || !end_datetime) {
+      return res.status(400).json("Bad Request");
+    }
     const newStudyPlan = await insertStudyPlan(
       task,
       start_datetime,
@@ -19,7 +22,9 @@ exports.postStudyPlan = async (req, res, next) => {
     );
     res.status(201).json({ study_plan: newStudyPlan });
   } catch (err) {
-    console.error(err.message);
+    console.error(err.message, "<-- post error message");
+    console.error(err, "<-- post error");
+    // next(err);
   }
 };
 
@@ -42,7 +47,7 @@ exports.getStudyPlanById = async (req, res, next) => {
     const selectedStudyPlan = await selectStudyPlanById(study_plan_id);
     res.status(200).json({ study_plan: selectedStudyPlan });
   } catch (err) {
-    console.error(err.message);
+    next(err);
   }
 };
 

@@ -1,5 +1,5 @@
 const db = require("../connection");
-
+//may have to remove try catch here
 //insert study plan into study plans table
 
 exports.insertStudyPlan = async (task, start_datetime, end_datetime) => {
@@ -30,15 +30,14 @@ exports.selectStudyPlans = async () => {
 //select study plan by id from study plans table
 
 exports.selectStudyPlanById = async (study_plan_id) => {
-  try {
-    const studyPlanById = await db.query(
-      `SELECT * FROM study_plans WHERE study_plan_id = $1;`,
-      [study_plan_id]
-    );
-    return studyPlanById.rows;
-  } catch (err) {
-    console.error(err.message);
+  const studyPlanById = await db.query(
+    `SELECT * FROM study_plans WHERE study_plan_id = $1;`,
+    [study_plan_id]
+  );
+  if (studyPlanById.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Study plan does not exist" });
   }
+  return studyPlanById.rows;
 };
 
 //update study plan by id in study plans table
