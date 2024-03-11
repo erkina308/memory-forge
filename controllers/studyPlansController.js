@@ -65,7 +65,7 @@ exports.patchStudyPlanById = async (req, res, next) => {
     );
     res.status(200).json({ study_plan: updatedStudyPlan });
   } catch (err) {
-    console.error(err.message);
+    console.error(err);
   }
 };
 
@@ -77,6 +77,6 @@ exports.deleteStudyPlanById = async (req, res, next) => {
     const studyPlanToDelete = await removeStudyPlanById(study_plan_id);
     res.status(204).json(studyPlanToDelete);
   } catch (err) {
-    console.error(err.message);
+    next(err);
   }
 };

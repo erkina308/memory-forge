@@ -62,13 +62,12 @@ exports.updateStudyPlanById = async (
 //delete study plan by id from study plans table
 
 exports.removeStudyPlanById = async (study_plan_id) => {
-  try {
-    const studyPlanToDelete = await db.query(
-      `DELETE FROM study_plans WHERE study_plan_id = $1 RETURNING *;`,
-      [study_plan_id]
-    );
-    return studyPlanToDelete.rows;
-  } catch (err) {
-    console.error(err.message);
+  const studyPlanToDelete = await db.query(
+    `DELETE FROM study_plans WHERE study_plan_id = $1 RETURNING *;`,
+    [study_plan_id]
+  );
+  if (studyPlanToDelete.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Study plan does not exist" });
   }
+  return studyPlanToDelete.rows;
 };
