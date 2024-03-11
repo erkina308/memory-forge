@@ -12,6 +12,9 @@ exports.postFlashcard = async (req, res, next) => {
   //need to use next for the error at some point
   try {
     const { question, answer } = req.body;
+    if (!question || !answer) {
+      return res.status(400).json({ msg: "Missing required fields" });
+    }
     const newFlashcard = await insertFlashcard(question, answer);
     res.status(201).json({ flashcard: newFlashcard });
   } catch (err) {
@@ -22,12 +25,8 @@ exports.postFlashcard = async (req, res, next) => {
 // get all flashcards
 
 exports.getFlashcards = async (req, res, next) => {
-  try {
-    const allFlashcards = await selectFlashcards();
-    res.status(200).json({ flashcards: allFlashcards });
-  } catch (err) {
-    console.error(err.message);
-  }
+  const allFlashcards = await selectFlashcards();
+  res.status(200).json({ flashcards: allFlashcards });
 };
 
 // get flashcard by id
@@ -38,7 +37,7 @@ exports.getFlashcardById = async (req, res, next) => {
     const selectedFlashcard = await selectFlashcardById(flashcard_id);
     res.status(200).json({ flashcard: selectedFlashcard });
   } catch (err) {
-    console.error(err.message);
+    next(err);
   }
 };
 
@@ -55,7 +54,7 @@ exports.patchFlashcardById = async (req, res, next) => {
     );
     res.status(200).json({ flashcard: updatedFlashcard });
   } catch (err) {
-    console.error(err.message);
+    next(err);
   }
 };
 
@@ -67,6 +66,6 @@ exports.deleteFlashcardById = async (req, res, next) => {
     const flashcardToDelete = await removeFlashcardById(flashcard_id);
     res.status(204).json(flashcardToDelete);
   } catch (err) {
-    console.error(err.message);
+    next(err);
   }
 };
