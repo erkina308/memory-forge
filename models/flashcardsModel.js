@@ -19,26 +19,21 @@ exports.insertFlashcard = async (question, answer) => {
 //select all flashcards from flashcards table
 
 exports.selectFlashcards = async () => {
-  try {
-    const allFlashcards = await db.query(`SELECT * FROM flashcards;`);
-    return allFlashcards.rows;
-  } catch (err) {
-    console.error(err.message);
-  }
+  const allFlashcards = await db.query(`SELECT * FROM flashcards;`);
+  return allFlashcards.rows;
 };
 
 //select flashcard by id from flashcards table
 
 exports.selectFlashcardById = async (flashcard_id) => {
-  try {
-    const flashcardById = await db.query(
-      `SELECT * FROM flashcards WHERE flashcard_id = $1;`,
-      [flashcard_id]
-    );
-    return flashcardById.rows;
-  } catch (err) {
-    console.error(err.message);
+  const flashcardById = await db.query(
+    `SELECT * FROM flashcards WHERE flashcard_id = $1;`,
+    [flashcard_id]
+  );
+  if (flashcardById.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Flashcard does not exist" });
   }
+  return flashcardById.rows;
 };
 
 //update flashcard by id in flashcards table
