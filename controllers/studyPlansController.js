@@ -6,14 +6,14 @@ const {
   removeStudyPlanById,
 } = require("../models/studyPlansModel");
 
-// post new study plan
+// post new study plan //this should be posted to a specific user
 
 exports.postStudyPlan = async (req, res, next) => {
   //need to use next for the error at some point
   try {
     const { task, start_datetime, end_datetime } = req.body;
     if (!task || !start_datetime || !end_datetime) {
-      return res.status(400).json("Bad Request");
+      return res.status(400).json({ msg: "Missing required fields" });
     }
     const newStudyPlan = await insertStudyPlan(
       task,
@@ -31,12 +31,8 @@ exports.postStudyPlan = async (req, res, next) => {
 // get all study plans
 
 exports.getStudyPlans = async (req, res, next) => {
-  try {
-    const allStudyPlans = await selectStudyPlans();
-    res.status(200).json({ study_plans: allStudyPlans });
-  } catch (err) {
-    console.error(err.message);
-  }
+  const allStudyPlans = await selectStudyPlans();
+  res.status(200).json({ study_plans: allStudyPlans });
 };
 
 // get study plan by id

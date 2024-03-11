@@ -19,52 +19,44 @@ exports.insertQuiz = async (question, choices, correct_answer) => {
 //select all quizzes from quizzes table
 
 exports.selectQuizzes = async () => {
-  try {
-    const allQuizzes = await db.query(`SELECT * FROM quizzes;`);
-    return allQuizzes.rows;
-  } catch (err) {
-    console.error(err.message);
-  }
+  const allQuizzes = await db.query(`SELECT * FROM quizzes;`);
+  return allQuizzes.rows;
 };
 
 //select quiz by id from quiz table
 
 exports.selectQuizById = async (quiz_id) => {
-  try {
-    const quizById = await db.query(
-      `SELECT * FROM quizzes WHERE quiz_id = $1;`,
-      [quiz_id]
-    );
-    return quizById.rows;
-  } catch (err) {
-    console.error(err.message);
+  const quizById = await db.query(`SELECT * FROM quizzes WHERE quiz_id = $1;`, [
+    quiz_id,
+  ]);
+  if (quizById.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Quiz does not exist" });
   }
+  return quizById.rows;
 };
 
 //update quiz by id in quizzes table
 
 exports.updateQuizById = async (question, choices, correct_answer, quiz_id) => {
-  try {
-    const updatedQuiz = await db.query(
-      `UPDATE quizzes SET question = $1, choices = $2, correct_answer = $3 WHERE quiz_id = $4 RETURNING *;`,
-      [question, choices, correct_answer, quiz_id]
-    );
-    return updatedQuiz.rows;
-  } catch (err) {
-    console.error(err.message);
+  const updatedQuiz = await db.query(
+    `UPDATE quizzes SET question = $1, choices = $2, correct_answer = $3 WHERE quiz_id = $4 RETURNING *;`,
+    [question, choices, correct_answer, quiz_id]
+  );
+  if (updatedQuiz.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Quiz does not exist" });
   }
+  return updatedQuiz.rows;
 };
 
 //delete quiz by id from quizzes table
 
 exports.removeQuizById = async (quiz_id) => {
-  try {
-    const quizToDelete = await db.query(
-      `DELETE FROM quizzes WHERE quiz_id = $1 RETURNING *;`,
-      [quiz_id]
-    );
-    return quizToDelete.rows;
-  } catch (err) {
-    console.error(err.message);
+  const quizToDelete = await db.query(
+    `DELETE FROM quizzes WHERE quiz_id = $1 RETURNING *;`,
+    [quiz_id]
+  );
+  if (quizToDelete.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Quiz does not exist" });
   }
+  return quizToDelete.rows;
 };

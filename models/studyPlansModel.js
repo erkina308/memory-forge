@@ -16,15 +16,11 @@ exports.insertStudyPlan = async (task, start_datetime, end_datetime) => {
   }
 };
 
-//select all study plans from study plans table
+//select all study plans from study plans table //create a sortby for this later on
 
 exports.selectStudyPlans = async () => {
-  try {
-    const allStudyPlans = await db.query(`SELECT * FROM study_plans;`);
-    return allStudyPlans.rows;
-  } catch (err) {
-    console.error(err.message);
-  }
+  const allStudyPlans = await db.query(`SELECT * FROM study_plans;`);
+  return allStudyPlans.rows;
 };
 
 //select study plan by id from study plans table
