@@ -52,13 +52,12 @@ exports.updateFlashcardById = async (question, answer, flashcard_id) => {
 //delete flashcard by id from flashcards table
 
 exports.removeFlashcardById = async (flashcard_id) => {
-  try {
-    const flashcardToDelete = await db.query(
-      `DELETE FROM flashcards WHERE flashcard_id = $1 RETURNING *;`,
-      [flashcard_id]
-    );
-    return flashcardToDelete.rows;
-  } catch (err) {
-    console.error(err.message);
+  const flashcardToDelete = await db.query(
+    `DELETE FROM flashcards WHERE flashcard_id = $1 RETURNING *;`,
+    [flashcard_id]
+  );
+  if (flashcardToDelete.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Flashcard does not exist" });
   }
+  return flashcardToDelete.rows;
 };
