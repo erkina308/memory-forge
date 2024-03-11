@@ -39,15 +39,14 @@ exports.selectFlashcardById = async (flashcard_id) => {
 //update flashcard by id in flashcards table
 
 exports.updateFlashcardById = async (question, answer, flashcard_id) => {
-  try {
-    const updatedFlashcard = await db.query(
-      `UPDATE flashcards SET question = $1, answer = $2 WHERE flashcard_id = $3 RETURNING *;`,
-      [question, answer, flashcard_id]
-    );
-    return updatedFlashcard.rows;
-  } catch (err) {
-    console.error(err.message);
+  const updatedFlashcard = await db.query(
+    `UPDATE flashcards SET question = $1, answer = $2 WHERE flashcard_id = $3 RETURNING *;`,
+    [question, answer, flashcard_id]
+  );
+  if (updatedFlashcard.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Flashcard does not exist" });
   }
+  return updatedFlashcard.rows;
 };
 
 //delete flashcard by id from flashcards table
