@@ -3,10 +3,11 @@ const express = require("express");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const db = require("../connection");
-// const bodyParser = require("body-parser");
+
 const authRouter = express.Router();
+
 authRouter.use(express.json());
-// const jsonParser = bodyParser.json();
+
 //Register
 authRouter.post("/register", async (req, res) => {
   console.log(req.body, "<--- req.body before destructuring");
@@ -67,7 +68,6 @@ authRouter.post("/login", async (req, res) => {
       expiresIn: "1h",
     });
     res.json({ token, userId: user.user_id }); // Send user ID along with the token
-    console.log("logged in");
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal Server Error" });
