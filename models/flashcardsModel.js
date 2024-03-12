@@ -5,7 +5,7 @@ const db = require("../connection");
 exports.insertFlashcard = async (user_id, question, answer) => {
   try {
     const newFlashcard = await db.query(
-      `INSERT INTO flashcards (user_id, question, answer) VALUES (1, $1, $2) RETURNING *;`,
+      `INSERT INTO flashcards (user_id, question, answer) VALUES ($1, $2, $3) RETURNING *;`,
       [user_id, question, answer]
     );
 

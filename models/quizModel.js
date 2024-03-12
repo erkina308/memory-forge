@@ -2,12 +2,11 @@ const db = require("../connection");
 
 //insert quiz into quizzes table
 
-exports.insertQuiz = async (question, choices, correct_answer) => {
+exports.insertQuiz = async (user_id, question, choices, correct_answer) => {
   try {
-    // const { question, choices, correct_answer } = req.body; //this should be in the controller // this should also be updated to dynamically take the id
     const newQuiz = await db.query(
-      `INSERT INTO quizzes (user_id, question, choices, correct_answer) VALUES (1, $1, $2, $3) RETURNING *;`,
-      [question, choices, correct_answer]
+      `INSERT INTO quizzes (user_id, question, choices, correct_answer) VALUES ($1, $2, $3, $4) RETURNING *;`,
+      [user_id, question, choices, correct_answer]
     );
 
     return newQuiz.rows[0];
@@ -18,8 +17,11 @@ exports.insertQuiz = async (question, choices, correct_answer) => {
 
 //select all quizzes from quizzes table
 
-exports.selectQuizzes = async () => {
-  const allQuizzes = await db.query(`SELECT * FROM quizzes;`);
+exports.selectQuizzes = async (user_id) => {
+  const allQuizzes = await db.query(
+    `SELECT * FROM quizzes WHERE user_id = $1;`,
+    [user_id]
+  );
   return allQuizzes.rows;
 };
 
