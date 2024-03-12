@@ -9,9 +9,6 @@ const port = 3000;
 app.use(cors());
 app.use(express.json()); //gives us access to request.body
 
-//middleware to check for valid token on protected routes
-app.use(checkForValidToken);
-
 //this is where the routes are coming from
 app.use("/auth", authRouter);
 app.use("/api", apiRouter);
