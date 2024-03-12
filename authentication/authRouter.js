@@ -10,9 +10,7 @@ authRouter.use(express.json());
 
 //Register
 authRouter.post("/register", async (req, res) => {
-  console.log(req.body, "<--- req.body before destructuring");
   const { username, password, email } = req.body;
-  console.log(username, password, email, "<--- req.body from registration");
 
   try {
     // Check if the username or email is already taken
