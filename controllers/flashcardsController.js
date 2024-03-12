@@ -15,7 +15,8 @@ exports.postFlashcard = async (req, res, next) => {
     if (!question || !answer) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
-    const newFlashcard = await insertFlashcard(question, answer);
+    const userId = req.user.user_id;
+    const newFlashcard = await insertFlashcard(userId, question, answer);
     res.status(201).json({ flashcard: newFlashcard });
   } catch (err) {
     console.error(err.message);
@@ -25,7 +26,8 @@ exports.postFlashcard = async (req, res, next) => {
 // get all flashcards
 
 exports.getFlashcards = async (req, res, next) => {
-  const allFlashcards = await selectFlashcards();
+  const userId = req.user.user_id;
+  const allFlashcards = await selectFlashcards(userId);
   res.status(200).json({ flashcards: allFlashcards });
 };
 

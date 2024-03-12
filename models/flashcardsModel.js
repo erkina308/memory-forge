@@ -2,12 +2,11 @@ const db = require("../connection");
 
 //insert flashcard into flashcards table
 
-exports.insertFlashcard = async (question, answer) => {
+exports.insertFlashcard = async (user_id, question, answer) => {
   try {
-    // const { question, answer } = req.body; //this should be in the controller // this should also be updated to dynamically take the id
     const newFlashcard = await db.query(
       `INSERT INTO flashcards (user_id, question, answer) VALUES (1, $1, $2) RETURNING *;`,
-      [question, answer]
+      [user_id, question, answer]
     );
 
     return newFlashcard.rows[0];
@@ -18,8 +17,11 @@ exports.insertFlashcard = async (question, answer) => {
 
 //select all flashcards from flashcards table
 
-exports.selectFlashcards = async () => {
-  const allFlashcards = await db.query(`SELECT * FROM flashcards;`);
+exports.selectFlashcards = async (user_id) => {
+  const allFlashcards = await db.query(
+    `SELECT * FROM flashcards WHERE user_id = $1;`,
+    [user_id]
+  );
   return allFlashcards.rows;
 };
 
