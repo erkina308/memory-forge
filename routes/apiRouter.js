@@ -1,15 +1,15 @@
 const express = require("express");
-const flashcardsRouter = require("./flashcardsRouter");
-const quizzesRouter = require("./quizzesRouter");
-const studyPlansRouter = require("./studyPlansRouter");
+const userRouter = require("./userRouter");
+const authMiddleware = require("../authentication/authMiddleware");
 
 const apiRouter = express.Router();
 
-//routes, add them as you go along
+// Apply the authMiddleware to the entire API router
+apiRouter.use(authMiddleware);
 
-apiRouter.use("/flashcards", flashcardsRouter);
-apiRouter.use("/quizzes", quizzesRouter);
-apiRouter.use("/study-plans", studyPlansRouter);
+//route
+
+apiRouter.use("/user", userRouter);
 
 //error handling
 

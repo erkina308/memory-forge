@@ -1,16 +1,19 @@
 const express = require("express");
 const app = express();
 const cors = require("cors");
+const authRouter = require("./authentication/authRouter");
 const apiRouter = require("./routes/apiRouter");
 const port = 3000;
 
 //middleware
-
 app.use(cors());
 app.use(express.json()); //gives us access to request.body
 
-//this is where the routes are coming from
+//middleware to check for valid token on protected routes
+app.use(checkForValidToken);
 
+//this is where the routes are coming from
+app.use("/auth", authRouter);
 app.use("/api", apiRouter);
 
 //error handling
