@@ -15,7 +15,7 @@ exports.postStudyPlan = async (req, res, next) => {
     if (!task || !start_datetime || !end_datetime) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
-    const userId = req.user.user_id;
+    const userId = req.user.userId;
     const newStudyPlan = await insertStudyPlan(
       userId,
       task,
@@ -33,7 +33,7 @@ exports.postStudyPlan = async (req, res, next) => {
 // get all study plans
 
 exports.getStudyPlans = async (req, res, next) => {
-  const userId = req.user.user_id;
+  const userId = req.user.userId;
   const allStudyPlans = await selectStudyPlans(userId);
   res.status(200).json({ study_plans: allStudyPlans });
 };

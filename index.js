@@ -35,6 +35,7 @@ app.use((err, req, res, next) => {
 //app.listen
 
 const server = app.listen(port, () => {
+  console.log(`http://localhost:3000`);
   console.log(`Server is running on port ${port}`);
 });
 

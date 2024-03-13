@@ -9,7 +9,7 @@ apiRouter.use(authMiddleware);
 
 //route
 
-apiRouter.use("/user", userRouter);
+apiRouter.use("/:user_id", userRouter);
 
 //error handling
 

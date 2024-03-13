@@ -15,7 +15,7 @@ exports.postQuiz = async (req, res, next) => {
     if (!question || !choices || !correct_answer) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
-    const userId = req.user.user_id;
+    const userId = req.user.userId;
     const newQuiz = await insertQuiz(userId, question, choices, correct_answer);
     res.status(201).json({ quiz: newQuiz });
   } catch (err) {
@@ -26,7 +26,7 @@ exports.postQuiz = async (req, res, next) => {
 // get all quizzes
 
 exports.getQuizzes = async (req, res, next) => {
-  const userId = req.user.user_id;
+  const userId = req.user.userId;
   const allQuizzes = await selectQuizzes(userId);
   res.status(200).json({ quizzes: allQuizzes });
 };
