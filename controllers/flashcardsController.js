@@ -27,7 +27,8 @@ exports.postFlashcard = async (req, res, next) => {
 
 exports.getFlashcards = async (req, res, next) => {
   const userId = req.user.userId;
-  const allFlashcards = await selectFlashcards(userId);
+  const { sort_by, order } = req.query;
+  const allFlashcards = await selectFlashcards(userId, sort_by, order);
   res.status(200).json({ flashcards: allFlashcards });
 };
 

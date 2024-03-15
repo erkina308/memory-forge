@@ -17,9 +17,18 @@ exports.insertFlashcard = async (user_id, question, answer) => {
 
 //select all flashcards from flashcards table
 
-exports.selectFlashcards = async (user_id) => {
+exports.selectFlashcards = async (
+  user_id,
+  sort_by = "created_at",
+  order = "desc"
+) => {
+  if (!["created_at"].includes(sort_by)) {
+    return Promise.reject({
+      msg: "Invalid sort by query",
+    });
+  }
   const allFlashcards = await db.query(
-    `SELECT * FROM flashcards WHERE user_id = $1;`,
+    `SELECT * FROM flashcards WHERE user_id = $1 ORDER BY ${sort_by} ${order};`,
     [user_id]
   );
   return allFlashcards.rows;
