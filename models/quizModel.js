@@ -17,9 +17,18 @@ exports.insertQuiz = async (user_id, question, choices, correct_answer) => {
 
 //select all quizzes from quizzes table
 
-exports.selectQuizzes = async (user_id) => {
+exports.selectQuizzes = async (
+  user_id,
+  sort_by = "created_at",
+  order = "desc"
+) => {
+  if (!["created_at"].includes(sort_by)) {
+    return Promise.reject({
+      msg: "Invalid sort by query",
+    });
+  }
   const allQuizzes = await db.query(
-    `SELECT * FROM quizzes WHERE user_id = $1;`,
+    `SELECT * FROM quizzes WHERE user_id = $1 ORDER BY ${sort_by} ${order};`,
     [user_id]
   );
   return allQuizzes.rows;

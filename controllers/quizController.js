@@ -27,7 +27,8 @@ exports.postQuiz = async (req, res, next) => {
 
 exports.getQuizzes = async (req, res, next) => {
   const userId = req.user.userId;
-  const allQuizzes = await selectQuizzes(userId);
+  const { sort_by, order } = req.query;
+  const allQuizzes = await selectQuizzes(userId, sort_by, order);
   res.status(200).json({ quizzes: allQuizzes });
 };
 
