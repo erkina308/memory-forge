@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { validateQuizInput } = require("../authentication/validationMiddleware");
 const {
   postQuiz,
   getQuizzes,
@@ -8,9 +9,9 @@ const {
   deleteQuizById,
 } = require("../controllers/quizController");
 
-//create quiz //'next' will be used when creating advanced error handling //user_id needs to change later on to be dynamic
+//create quiz //'next' will be used when creating advanced error handling
 
-router.post("/", postQuiz);
+router.post("/", validateQuizInput, postQuiz);
 
 //get all quizzes
 
@@ -20,9 +21,9 @@ router.get("/", getQuizzes);
 
 router.get("/:quiz_id", getQuizById);
 
-//update a quiz by id //user_id needs to change later on to be dynamic
+//update a quiz by id
 
-router.patch("/:quiz_id", patchQuizById);
+router.patch("/:quiz_id", validateQuizInput, patchQuizById);
 
 //delete a quiz
 

@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const {
   insertQuiz,
   selectQuizzes,
@@ -11,6 +12,11 @@ const {
 exports.postQuiz = async (req, res, next) => {
   //need to use next for the error at some point
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { question, choices, correct_answer } = req.body;
     if (!question || !choices || !correct_answer) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -48,6 +54,11 @@ exports.getQuizById = async (req, res, next) => {
 
 exports.patchQuizById = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { quiz_id } = req.params;
     const { question, choices, correct_answer } = req.body;
     const updatedQuiz = await updateQuizById(

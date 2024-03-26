@@ -1,6 +1,9 @@
 const express = require("express");
 const router = express.Router();
 const {
+  validateStudyPlanInput,
+} = require("../authentication/validationMiddleware");
+const {
   postStudyPlan,
   getStudyPlans,
   getStudyPlanById,
@@ -10,7 +13,7 @@ const {
 
 //create study plan //'next' will be used when creating advanced error handling //user_id needs to change later on to be dynamic
 
-router.post("/", postStudyPlan);
+router.post("/", validateStudyPlanInput, postStudyPlan);
 
 //get all study plans
 
@@ -22,7 +25,7 @@ router.get("/:study_plan_id", getStudyPlanById);
 
 //update a study plan by id //user_id needs to change later on to be dynamic
 
-router.patch("/:study_plan_id", patchStudyPlanById);
+router.patch("/:study_plan_id", validateStudyPlanInput, patchStudyPlanById);
 
 //delete a study plan
 

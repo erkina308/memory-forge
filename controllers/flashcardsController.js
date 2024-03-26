@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const {
   insertFlashcard,
   selectFlashcards,
@@ -11,6 +12,11 @@ const {
 exports.postFlashcard = async (req, res, next) => {
   //need to use next for the error at some point
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { question, answer } = req.body;
     if (!question || !answer) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -48,6 +54,11 @@ exports.getFlashcardById = async (req, res, next) => {
 
 exports.patchFlashcardById = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { flashcard_id } = req.params;
     const { question, answer } = req.body;
     const updatedFlashcard = await updateFlashcardById(

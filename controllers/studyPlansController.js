@@ -1,3 +1,4 @@
+const { validationResult } = require("express-validator");
 const {
   insertStudyPlan,
   selectStudyPlans,
@@ -11,6 +12,11 @@ const {
 exports.postStudyPlan = async (req, res, next) => {
   //need to use next for the error at some point
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { task, start_datetime, end_datetime } = req.body;
     if (!task || !start_datetime || !end_datetime) {
       return res.status(400).json({ msg: "Missing required fields" });
@@ -54,6 +60,11 @@ exports.getStudyPlanById = async (req, res, next) => {
 
 exports.patchStudyPlanById = async (req, res, next) => {
   try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ errors: errors.array() });
+    }
+
     const { study_plan_id } = req.params;
     const { task, start_datetime, end_datetime } = req.body;
     const updatedStudyPlan = await updateStudyPlanById(

@@ -13,7 +13,7 @@ apiRouter.use("/:user_id", userRouter);
 
 //error handling
 
-apiRouter.use((req, res) => {
+apiRouter.use((req, res) => { 
   res.status(404).json({ msg: "Not Found" });
 });
 
