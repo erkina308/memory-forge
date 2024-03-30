@@ -1,6 +1,7 @@
 const express = require("express");
 const userRouter = require("./userRouter");
 const authMiddleware = require("../authentication/authMiddleware");
+const topicRouter = require("./topicRouter");
 
 const apiRouter = express.Router();
 
@@ -9,11 +10,12 @@ apiRouter.use(authMiddleware);
 
 //route
 
+apiRouter.use("/topics", topicRouter);
 apiRouter.use("/:user_id", userRouter);
 
 //error handling
 
-apiRouter.use((req, res) => { 
+apiRouter.use((req, res) => {
   res.status(404).json({ msg: "Not Found" });
 });
 

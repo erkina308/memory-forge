@@ -1,5 +1,5 @@
 const db = require("../connection");
-//may have to remove try catch here
+
 //insert study plan into study plans table
 
 exports.insertStudyPlan = async (
