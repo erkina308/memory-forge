@@ -2,11 +2,11 @@ const db = require("../connection");
 
 //insert flashcard into flashcards table
 
-exports.insertFlashcard = async (user_id, question, answer) => {
+exports.insertFlashcard = async (user_id, question, answer, topic) => {
   try {
     const newFlashcard = await db.query(
-      `INSERT INTO flashcards (user_id, question, answer) VALUES ($1, $2, $3) RETURNING *;`,
-      [user_id, question, answer]
+      `INSERT INTO flashcards (user_id, question, answer, topic) VALUES ($1, $2, $3, $4) RETURNING *;`,
+      [user_id, question, answer, topic]
     );
 
     return newFlashcard.rows[0];
@@ -20,17 +20,27 @@ exports.insertFlashcard = async (user_id, question, answer) => {
 exports.selectFlashcards = async (
   user_id,
   sort_by = "created_at",
-  order = "desc"
+  order = "desc",
+  topic
 ) => {
   if (!["created_at"].includes(sort_by)) {
     return Promise.reject({
       msg: "Invalid sort by query",
     });
   }
-  const allFlashcards = await db.query(
-    `SELECT * FROM flashcards WHERE user_id = $1 ORDER BY ${sort_by} ${order};`,
-    [user_id]
-  );
+
+  let queryStr = `SELECT * FROM flashcards WHERE user_id = $1`;
+
+  const queryParams = [user_id];
+
+  if (topic) {
+    queryStr += `AND topic = $2`;
+    queryParams.push(topic);
+  }
+
+  queryStr += `ORDER BY ${sort_by} ${order}`;
+
+  const allFlashcards = await db.query(queryStr, queryParams);
   return allFlashcards.rows;
 };
 

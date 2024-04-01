@@ -3,6 +3,7 @@ const app = express();
 const cors = require("cors");
 const authRouter = require("./authentication/authRouter");
 const apiRouter = require("./routes/apiRouter");
+const topicRouter = require("./routes/topicRouter");
 const port = 3000;
 
 //middleware
@@ -12,6 +13,7 @@ app.use(express.json()); //gives us access to request.body
 //this is where the routes are coming from
 app.use("/auth", authRouter);
 app.use("/api", apiRouter);
+app.use("/topics", topicRouter);
 
 //error handling
 

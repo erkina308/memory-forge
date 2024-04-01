@@ -17,12 +17,12 @@ exports.postFlashcard = async (req, res, next) => {
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { question, answer } = req.body;
-    if (!question || !answer) {
+    const { question, answer, topic } = req.body;
+    if (!question || !answer || !topic) {
       return res.status(400).json({ msg: "Missing required fields" });
     }
     const userId = req.user.userId;
-    const newFlashcard = await insertFlashcard(userId, question, answer);
+    const newFlashcard = await insertFlashcard(userId, question, answer, topic);
     res.status(201).json({ flashcard: newFlashcard });
   } catch (err) {
     console.error(err.message);
@@ -33,8 +33,8 @@ exports.postFlashcard = async (req, res, next) => {
 
 exports.getFlashcards = async (req, res, next) => {
   const userId = req.user.userId;
-  const { sort_by, order } = req.query;
-  const allFlashcards = await selectFlashcards(userId, sort_by, order);
+  const { sort_by, order, topic } = req.query;
+  const allFlashcards = await selectFlashcards(userId, sort_by, order, topic);
   res.status(200).json({ flashcards: allFlashcards });
 };
 
