@@ -5,6 +5,7 @@ const {
   selectFlashcardById,
   updateFlashcardById,
   removeFlashcardById,
+  findFlashcard,
 } = require("../models/flashcardsModel");
 
 // post new flashcard
@@ -79,6 +80,20 @@ exports.deleteFlashcardById = async (req, res, next) => {
     const { flashcard_id } = req.params;
     const flashcardToDelete = await removeFlashcardById(flashcard_id);
     res.status(204).json(flashcardToDelete);
+  } catch (err) {
+    next(err);
+  }
+};
+
+// search for a flashcard
+
+exports.searchFlashcard = async (req, res, next) => {
+  console.log(req.query, "<--- in backend");
+  const { query } = req.query;
+  console.log(query, "<---");
+  try {
+    const searchedFlashcards = await findFlashcard(query);
+    res.status(200).json({ flashcards: searchedFlashcards });
   } catch (err) {
     next(err);
   }

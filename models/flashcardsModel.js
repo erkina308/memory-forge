@@ -82,3 +82,16 @@ exports.removeFlashcardById = async (flashcard_id) => {
   }
   return flashcardToDelete.rows;
 };
+
+//search for flashcard
+
+exports.findFlashcard = async (query) => {
+  const flashcardToSearch = await db.query(
+    `SELECT * FROM flashcards WHERE question ILIKE $1 OR answer ILIKE $1`,
+    [`%${query}%`]
+  );
+  if (flashcardToSearch.rows.length === 0) {
+    return Promise.reject({ status: 404, msg: "Flashcard does not exist" });
+  }
+  return flashcardToSearch.rows;
+};

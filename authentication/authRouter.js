@@ -9,6 +9,28 @@ const authRouter = express.Router();
 
 authRouter.use(express.json());
 
+function authenticateToken(req, res, next) {
+  const authHeader = req.headers["authorization"];
+  if (authHeader) {
+    const token = authHeader.split(" ")[1];
+    jwt.verify(token, process.env.SECRET_KEY, (err, user) => {
+      if (err) {
+        if (err.name === "TokenExpiredError") {
+          console.error("Token expired");
+          return res.status(401).json({ error: "Token expired" });
+        }
+        console.error("Error", err);
+        return res.sendStatus(401);
+      }
+      req.user = user;
+      next();
+    });
+  } else {
+    console.error("No authorization header found");
+    res.sendStatus(401);
+  }
+}
+
 //Register
 authRouter.post(
   "/register",
@@ -51,7 +73,11 @@ authRouter.post(
         [username, hashedPassword, email]
       );
 
-      res.status(201).json({ user: newUser.rows[0] });
+      const user = newUser.rows[0];
+      const payload = { userId: user.user_id, username: user.username };
+      const secretKey = process.env.SECRET_KEY;
+      const token = jwt.sign(payload, secretKey, { expiresIn: "1h" });
+      res.json({ token });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
@@ -99,15 +125,33 @@ authRouter.post(
       }
 
       // Generate JWT token with user ID
-      const token = jwt.sign({ userId: user.user_id }, process.env.SECRET_KEY, {
+      const payload = { userId: user.user_id, username: user.username };
+      const secretKey = process.env.SECRET_KEY;
+      const token = jwt.sign(payload, secretKey, {
         expiresIn: "1h",
       });
-      res.json({ token, userId: user.user_id }); // Send user ID along with the token
+      res.json({ token, userId: user.user_id, username: user.username }); // Send user ID along with the token
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: "Internal Server Error" });
     }
   }
 );
+
+authRouter.post("/refresh-token", authenticateToken, (req, res) => {
+  try {
+    const user = req.user; // User object retrieved from the authenticateToken middleware
+    const payload = { userId: user.user_id, username: user.username };
+    const secretKey = process.env.SECRET_KEY;
+    const token = jwt.sign(payload, secretKey, {
+      expiresIn: "1h", // You can adjust the expiration time as needed
+    });
+    console.log("refreshed token");
+    res.json({ token });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 module.exports = authRouter;
