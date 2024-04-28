@@ -4,7 +4,7 @@ const cors = require("cors");
 const authRouter = require("./authentication/authRouter");
 const apiRouter = require("./routes/apiRouter");
 const topicRouter = require("./routes/topicRouter");
-const port = 3000;
+const port = 9090;
 
 //middleware
 app.use(cors());
@@ -37,7 +37,6 @@ app.use((err, req, res, next) => {
 //app.listen
 
 const server = app.listen(port, () => {
-  console.log(`http://localhost:3000`);
   console.log(`Server is running on port ${port}`);
 });
 
